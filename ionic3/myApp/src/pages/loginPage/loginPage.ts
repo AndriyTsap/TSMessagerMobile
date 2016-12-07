@@ -4,7 +4,7 @@ import { NavController } from 'ionic-angular';
 import { MembershipService } from '../../app/core/services/membership.service';
 import { UserService } from '../../app/core/services/user.service'
 import { User } from '../../app/core/domain/user';
-
+import { Registration } from '../../app/core/domain/registration';
 
 @Component({
     templateUrl: 'loginPage.html'
@@ -16,18 +16,26 @@ export class LoginPage {
     }
 
     error: any;
+    authType: string = "login";
+
 
     login(user: User) {
-        //let users = this.userService.getUsers().subscribe(data=>console.log(data));
-        console.log(user);
-        let creds = this.membershipService.login(user)
-            .then(data => {this.storeJWT(data); console.log(data)},
+        this.membershipService.login(user)
+            .then(data => {this.storeJWT(data);
+                this.storage.set('user', user.Username);},
             err => {this.error = err; console.log(err)})
+    }
+
+    signup(creds: Registration){
+        this.membershipService.register(creds)
+            .then(data => console.log(data),
+            err => console.log(err))
     }
 
     storeJWT(data: any) {
         this.error = null;
-        this.storage.set('_token', data.access_token);
-        console.log(this.storage.get('_token'));
+        let token = JSON.parse(data);
+        this.storage.set('token', token.access_token);
+        this.storage.get('token').then(data => console.log(data));
     }
 }

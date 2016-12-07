@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { DataService } from './data.service';
 import { Registration } from '../domain/registration';
 import { User } from '../domain/user';
+import { Storage } from '@ionic/storage';
 
 @Injectable()
 export class MembershipService {
@@ -11,13 +12,13 @@ export class MembershipService {
     private _accountLoginAPI: string = 'token';
     private _accountLogoutAPI: string = 'api/account/logout/';
 
-    constructor(public accountService: DataService) { }
+    constructor(public accountService: DataService, public storage: Storage) { }
 
     register(newUser: Registration) {
 
         this.accountService.set(this._accountRegisterAPI);
-
-        return this.accountService.post(JSON.stringify(newUser));
+        let headers = [{ header: 'Content-Type', value: 'application/json' }];
+        return this.accountService.post(JSON.stringify(newUser), headers);
     }
 
     login(creds: User) {
@@ -25,19 +26,19 @@ export class MembershipService {
         urlSearchParams.append('username', creds.Username);
         urlSearchParams.append('password', creds.Password);
         let body = urlSearchParams.toString();
-        let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
+        let headers = [{ header: 'Content-Type', value: 'application/x-www-form-urlencoded' }];
         this.accountService.set(this._accountLoginAPI);
-        return this.accountService.post(body, headers, true);
+        return this.accountService.post(body, headers);
     }
 
     logout() {
         this.accountService.set(this._accountLogoutAPI);
-        return this.accountService.post(null, null, false);
+        return this.accountService.post(null, null);
     }
 
     isUserAuthenticated(): boolean {
-        var _user = localStorage.getItem('user');
-        if (_user != null)
+        var _token = this.storage.get('token');
+        if (_token != null)
             return true;
         else
             return false;

@@ -7,21 +7,68 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content>
-  <ion-list>
-
-    <ion-item>
-      <ion-label>Username</ion-label>
-      <ion-input type="text" #username></ion-input>
-    </ion-item>
-
-    <ion-item>
-      <ion-label>Password</ion-label>
-      <ion-input type="password" #password></ion-input>
-    </ion-item>
-
-  </ion-list>
+<ion-content class="login" *ngIf="!auth.authenticated()">
   <div padding>
-    <button ion-button block (click)="login({Username: username.value, Password: password.value})">Sign In</button>
+    <ion-segment [(ngModel)]="authType">
+      <ion-segment-button value="login">
+        Login
+      </ion-segment-button>
+      <ion-segment-button value="signup">
+        Signup
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+  <div [ngSwitch]="authType">
+    <div *ngSwitchCase="'login'">
+      <ion-list>
+        <ion-item>
+          <ion-label floating>Username</ion-label>
+          <ion-input type="text" #username></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label floating>Password</ion-label>
+          <ion-input type="password" #password></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Remember me</ion-label>
+          <ion-checkbox checked="false" #rememberMe></ion-checkbox>
+        </ion-item>
+      </ion-list>
+      <div padding>
+        <button ion-button block (click)="login({Username: username.value,
+          Password: password.value, RememberMe: rememberMe.checked})">Login</button>
+      </div>
+    </div>
+    <div *ngSwitchCase="'signup'">
+      <ion-list>
+
+        <ion-item>
+          <ion-label floating>Username</ion-label>
+          <ion-input type="text" #username></ion-input>
+        </ion-item>
+        
+        <ion-item>
+          <ion-label floating> Email</ion-label>
+          <ion-input type="text" #email></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label floating>Password</ion-label>
+          <ion-input type="password" #password></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label floating>Confirm password</ion-label>
+          <ion-input type="password" #confirmPassword></ion-input>
+        </ion-item>
+
+      </ion-list>
+      <div padding>
+        <button ion-button block (click)="signup({Username: username.value, 
+          Email: email.value, Password: password.value})">Sign up</button>
+      </div>
+    </div>
   </div>
 </ion-content>

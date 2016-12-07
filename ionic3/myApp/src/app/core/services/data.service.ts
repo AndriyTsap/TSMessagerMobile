@@ -32,13 +32,14 @@ export class DataService {
             .map(response => (<Response>response));
     }
 
-    post(data: any, headers?: Headers, mapJson: boolean = true) {
+    post(data: any, headers?: any) {
         var uri = this._baseUri;
         return new Promise(function (resolve, reject) {
             var xhr = new XMLHttpRequest();
 
             xhr.open("POST", uri, true)
-            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
+            if (headers)
+                headers.forEach(header => xhr.setRequestHeader(header.header, header.value));
 
             xhr.onload = function () {
                 if (xhr.status == 200) {
@@ -52,30 +53,30 @@ export class DataService {
                 reject(new Error("Network Error"));
             };
             xhr.send(data);
-    });
-}
-
-postAuthenticate(token:string, data ?: any, mapJson: boolean = true){
-    var headers = new Headers();
-    headers.append("Authorization", "Bearer " + token)
-    if (mapJson)
-        return this.http.post(this._baseUri, data, {
-            headers: headers
-        })
-            .map(response => <any>(<Response>response).json());
-    else
-        return this.http.post(this._baseUri, data, {
-            headers: headers
         });
-}
+    }
 
-delete (id: number) {
-    return this.http.delete(this._baseUri + '/' + id.toString())
-        .map(response => <any>(<Response>response).json())
-}
+    postAuthenticate(token: string, data?: any, mapJson: boolean = true) {
+        var headers = new Headers();
+        headers.append("Authorization", "Bearer " + token)
+        if (mapJson)
+            return this.http.post(this._baseUri, data, {
+                headers: headers
+            })
+                .map(response => <any>(<Response>response).json());
+        else
+            return this.http.post(this._baseUri, data, {
+                headers: headers
+            });
+    }
 
-deleteResource(resource: string) {
-    return this.http.delete(resource)
-        .map(response => <any>(<Response>response).json())
-}
+    delete(id: number) {
+        return this.http.delete(this._baseUri + '/' + id.toString())
+            .map(response => <any>(<Response>response).json())
+    }
+
+    deleteResource(resource: string) {
+        return this.http.delete(resource)
+            .map(response => <any>(<Response>response).json())
+    }
 }
