@@ -44,31 +44,31 @@
     </div>
     <div *ngSwitchCase="'signup'">
       <ion-list>
+        <form [formGroup]="signupForm" (ngSubmit)="signup()">
+          <ion-item>
+            <ion-label floating>Username</ion-label>
+            <ion-input type="text" formControlName="Username"></ion-input>
+          </ion-item>
 
-        <ion-item>
-          <ion-label floating>Username</ion-label>
-          <ion-input type="text" #username></ion-input>
-        </ion-item>
+          <ion-item>
+            <ion-label floating> Email</ion-label>
+            <ion-input type="text" formControlName="Email"></ion-input>
+          </ion-item>
+          <div formGroupName="Passwords">
+            <ion-item>
+              <ion-label floating>Password</ion-label>
+              <ion-input type="password" formControlName="Password" ></ion-input>
+            </ion-item>
 
-        <ion-item>
-          <ion-label floating> Email</ion-label>
-          <ion-input type="text" #email></ion-input>
-        </ion-item>
-
-        <ion-item>
-          <ion-label floating>Password</ion-label>
-          <ion-input type="password" #password></ion-input>
-        </ion-item>
-
-        <ion-item>
-          <ion-label floating>Confirm password</ion-label>
-          <ion-input type="password" #confirmPassword></ion-input>
-        </ion-item>
-
+            <ion-item>
+              <ion-label floating>Confirm password</ion-label>
+              <ion-input type="password" formControlName="ConfirmPassword"></ion-input>
+            </ion-item>
+          </div>
+        </form>
       </ion-list>
       <div padding>
-        <button ion-button block (click)="signup({Username: username.value, 
-          Email: email.value, Password: password.value})">Sign up</button>
+        <button ion-button block type="submit" [disabled]="!signupForm.valid">Sign up</button>
       </div>
     </div>
   </div>

@@ -4,6 +4,8 @@
     "declaration": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "removeComments": false,
+    "suppressImplicitAnyIndexErrors": true,
     "lib": [
       "dom",
       "es2015"
@@ -11,7 +13,7 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "sourceMap": true,
-    "target": "es5"
+    "target": "es2015"
   },
   "include": [
     "src/**/*.ts"
@@ -22,5 +24,9 @@
   "compileOnSave": false,
   "atom": {
     "rewriteTsconfig": false
+  },
+  "angularCompilerOptions": {
+    "genDir": ".",
+    "debug": true
   }
 }

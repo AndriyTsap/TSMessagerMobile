@@ -37,5 +37,16 @@
   <!-- The bundle js is generated during the build process -->
   <script src="build/main.js"></script>
 
+  <script type="text/javascript">
+    $(function () {
+        var broadcaster = $.connection.broadcaster;
+        broadcaster.client.message = function (text) {
+            alert(text);
+        };
+        $.connection.hub.start().done(function () {
+            broadcaster.server.broadcast('hello from client');
+        });
+     });
+    </script>
 </body>
 </html>
