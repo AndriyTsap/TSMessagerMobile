@@ -1,7 +1,9 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
-import { Storage } from '@ionic/storage';
+import { IonicStorageModule } from '@ionic/storage'
+import { BrowserModule } from '@angular/platform-browser';
+import { HttpModule } from '@angular/http';
 //components
 import { Page1 } from '../pages/page1/page1';
 import { Page2 } from '../pages/page2/page2';
@@ -19,7 +21,10 @@ import { UserService } from '../app/core/services/user.service'
     LoginPage
   ],
   imports: [
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    IonicStorageModule.forRoot(MyApp),
+    BrowserModule,
+    HttpModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -28,6 +33,6 @@ import { UserService } from '../app/core/services/user.service'
     Page2,
     LoginPage
   ],
-  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, DataService, UserService, MembershipService, Storage]
+  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, DataService, UserService, MembershipService]
 })
 export class AppModule {}
