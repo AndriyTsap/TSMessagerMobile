@@ -1,13 +1,13 @@
-<ion-header>
+
+<ion-content class="login" *ngIf="!token">
+
   <ion-navbar>
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>Login</ion-title>
   </ion-navbar>
-</ion-header>
 
-<ion-content class="login" *ngIf="!username">
   <div padding>
     <ion-segment [(ngModel)]="authType">
       <ion-segment-button value="login">
@@ -18,29 +18,25 @@
       </ion-segment-button>
     </ion-segment>
   </div>
-  <div [ngSwitch]="authType">
+  <div [ngSwitch]="authType" padding-right>
     <div *ngSwitchCase="'login'">
-      <ion-list>
-        <form [formGroup]="loginForm" (ngSubmit)="login()">
-          <ion-item>
-            <ion-label floating>Username</ion-label>
-            <ion-input type="text" [(ngModel)]="user.Username" formControlName="Username"></ion-input>
-          </ion-item>
-
-          <ion-item>
-            <ion-label floating>Password</ion-label>
-            <ion-input type="password" [(ngModel)]="user.Password" formControlName="Password"></ion-input>
-          </ion-item>
-
-          <ion-item>
-            <ion-label>Remember me</ion-label>
-            <ion-checkbox checked="false" [(ngModel)]="user.RememberMe" formControlName="RememberMe"></ion-checkbox>
-          </ion-item>
-          <div padding>
-            <button ion-button block type="submit" [disabled]="!loginForm.valid">Login</button>
-          </div>
-        </form>
-      </ion-list>
+      <form [formGroup]="loginForm" (ngSubmit)="login()">
+        <ion-item>
+          <ion-label floating>Username</ion-label>
+          <ion-input type="text" [(ngModel)]="user.Username" formControlName="Username"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label floating>Password</ion-label>
+          <ion-input type="password" [(ngModel)]="user.Password" formControlName="Password"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label>Remember me</ion-label>
+          <ion-checkbox checked="false" [(ngModel)]="user.RememberMe" formControlName="RememberMe"></ion-checkbox>
+        </ion-item>
+        <div padding-left padding-top>
+          <button ion-button block type="submit" [disabled]="!loginForm.valid">Login</button>
+        </div>
+      </form>
     </div>
     <div *ngSwitchCase="'signup'">
       <ion-list>
@@ -49,7 +45,6 @@
             <ion-label floating>Username</ion-label>
             <ion-input type="text" formControlName="Username"></ion-input>
           </ion-item>
-
           <ion-item>
             <ion-label floating> Email</ion-label>
             <ion-input type="text" formControlName="Email"></ion-input>
@@ -57,9 +52,8 @@
           <div formGroupName="Passwords">
             <ion-item>
               <ion-label floating>Password</ion-label>
-              <ion-input type="password" formControlName="Password" ></ion-input>
+              <ion-input type="password" formControlName="Password"></ion-input>
             </ion-item>
-
             <ion-item>
               <ion-label floating>Confirm password</ion-label>
               <ion-input type="password" formControlName="ConfirmPassword"></ion-input>
@@ -67,16 +61,22 @@
           </div>
         </form>
       </ion-list>
-      <div padding>
+      <div padding-left padding-top>
         <button ion-button block type="submit" [disabled]="!signupForm.valid">Sign up</button>
       </div>
     </div>
   </div>
 </ion-content>
 
-<ion-content *ngIf="username">
+<ion-content *ngIf="token">
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Logout</ion-title>
+  </ion-navbar>
   <div padding>
     <h1>Welcome, {{ username }}</h1>
-    <button block (click)="logout()">Logout</button>
+    <button ion-button block (click)="logout()">Logout</button>
   </div>
 </ion-content>

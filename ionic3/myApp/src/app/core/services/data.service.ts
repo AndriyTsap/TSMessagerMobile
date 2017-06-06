@@ -18,6 +18,10 @@ export class DataService {
         this._pageSize = pageSize;
     }
 
+    getApiHost() {
+        return this._apiHost;
+    }
+
     get(page?: number) {
 
         if (page != undefined) {
@@ -69,9 +73,53 @@ export class DataService {
             });
     }
 
-    delete(id: number) {
-        return this.http.delete(this._baseUri + '/' + id.toString())
+    putAuthenticate(token: string, data: any, mapJson: boolean = true) {
+        var headers = new Headers();
+        headers.append("Authorization", "Bearer " + token)
+        if (mapJson)
+            return this.http.put(this._baseUri, data, {
+                headers: headers
+            })
+                .map(response => <any>(<Response>response).json());
+        else
+            return this.http.put(this._baseUri, data, {
+                headers: headers
+            });
+    }
+
+    getAuthenticate(token: string, page?: number) {
+        var headers = new Headers();
+        headers.append("Authorization", "Bearer " + token)
+        headers.append("Content-Type", "application/json")
+        if (page != undefined) {
+            var uri = this._baseUri + page.toString() + '/' + this._pageSize.toString();
+        }
+        else
+            var uri = this._baseUri;
+
+        return this.http.get(uri, { headers: headers })
+            .map(response => (<Response>response));
+    }
+
+    delete(token: string) {
+        var headers = new Headers();
+        headers.append("Content-Type", "application/json")
+        headers.append("Authorization", "Bearer " + token)
+        return this.http.delete(this._baseUri, {
+            headers: headers
+        })
             .map(response => <any>(<Response>response).json())
+    }
+
+    upload(file: any) {
+        let input = new FormData();
+        let headers = new Headers()
+        headers.append("enctype", "multipart/form-data");
+        input.append("file", file);
+        return this.http
+            .post(this._baseUri, input, {
+                headers: headers
+            })
     }
 
     deleteResource(resource: string) {

@@ -1,0 +1,30 @@
+<ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Home</ion-title>
+</ion-navbar>
+
+
+<ion-item padding-right padding-bottom>
+    <ion-label floating>Search</ion-label>
+    <ion-input type="text"></ion-input>
+</ion-item>
+<div *ngFor="let user of friends" class="list-group-item text-left" padding-right>
+    <ion-item>
+        <ion-avatar image-large item-left (click)="userSelected(user.id)">
+            <img src="{{userService.getApiHost() + 'images/' + user.photo}}">
+        </ion-avatar>
+        <ion-row>
+            <ion-col col-10 (click)="userSelected(user.id)">
+                <h2> {{ user.firstName }} {{ user.lastName }} </h2>
+                <p> {{ user.birthDate }} </p>
+            </ion-col>
+            <ion-col float-right text-center (click)="goChats(user.id)">
+                <button small ion-button menuToggle>
+                    <ion-icon name="text"></ion-icon>
+                </button>
+            </ion-col>
+        </ion-row>
+    </ion-item>
+</div>
